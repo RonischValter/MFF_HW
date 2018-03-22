@@ -1,0 +1,9 @@
+#!/bin/sh
+
+mod=$1
+soubor=$2
+
+if [ $mod = "--help" ]; then echo Pokud chcete vypsat adresy obrázků, použijte přepínač -i, pokud zvukových souborů, použijte přepínač -s.;
+else if [ $mod = "-i" ]; then cat $soubor | tr "\"" "\n" | grep -e .jpg -e .png -e .svg;
+                         else if [ $mod = "-s" ]; then cat $soubor | tr "\"" "\n" | grep -e .wav -e .mp3 -e .ogg;
+                                                  else cat $mod | tr "\"" "\n" | grep -e .jpg -e .png -e .svg -e .wav -e .mp3 -e .ogg;fi ;fi ;fi
