@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+soubor=$1
+
+echo $soubor | while read line; do count=(wc -m "$line")
+
+                                   tr ^ "$count "; done | sort | cut -f2 | echo
