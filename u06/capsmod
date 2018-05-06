@@ -1,0 +1,38 @@
+#!/bin/bash
+opak="false"
+soubor=$2
+if [ "$1" = "-r" ] ; then opak="true"
+	else soubor="$1"
+fi
+
+cd $soubor
+
+find -type f | while read f; do
+
+if [ "$opak" = "false" ]
+then
+	echo $f | egrep '\b[^a-z]+\b' > /dev/null
+	if [ $? -eq 0 ]
+		then
+			pom=`echo $f | tr [:upper:] [:lower:]`
+			if [ -f "$pom" ];
+				then
+					echo "Takovy soubor jiz existuje" >&2;
+				else
+					mv "$f" "$pom";
+			fi
+	fi
+else
+	echo $f | egrep '\b[^A-Z]+\b' > /dev/null
+        if [ $? -eq 0 ]
+                then
+                        pom=`echo $f | tr [:lower:] [:upper:]`
+                        if [ -f "$pom" ];
+                                then
+                                        echo "Takovy soubor jiz existuje" >&2;                                  else
+                                        mv "$f" "$pom";
+                        fi
+        fi
+fi
+done
+
