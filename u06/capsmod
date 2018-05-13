@@ -1,38 +1,34 @@
 #!/bin/bash
-opak="false"
-soubor=$2
-if [ "$1" = "-r" ] ; then opak="true"
-	else soubor="$1"
+
+opak=""
+soubor=""
+if [ "$1"="-r" ] ; then opak="-r"
+        else if [ "$1"="" ] ; then soubor="."
+             else soubor="$1";
+	     fi
 fi
+if [ $2 = "-r" ]; then opak="-r"; fi
 
 cd $soubor
 
-find -type f | while read f; do
-
-if [ "$opak" = "false" ]
-then
-	echo $f | egrep '\b[^a-z]+\b' > /dev/null
-	if [ $? -eq 0 ]
-		then
-			pom=`echo $f | tr [:upper:] [:lower:]`
-			if [ -f "$pom" ];
-				then
-					echo "Takovy soubor jiz existuje" >&2;
-				else
-					mv "$f" "$pom";
-			fi
-	fi
+if [ $opak="" ]; then 
+find -type f | grep [^a-z] | while read line; do 
+				dir=$line
+				newdir=`echo $line | tr A-Z a-z`
+				if [ -e "$newdir" ]; then
+						echo "Soubor $line nelzeprejmenovat"
+						     else
+						mv -f "dir" "newdir"
+				fi
+				done   
 else
-	echo $f | egrep '\b[^A-Z]+\b' > /dev/null
-        if [ $? -eq 0 ]
-                then
-                        pom=`echo $f | tr [:lower:] [:upper:]`
-                        if [ -f "$pom" ];
-                                then
-                                        echo "Takovy soubor jiz existuje" >&2;                                  else
-                                        mv "$f" "$pom";
-                        fi
-        fi
+find -type f | grep [^A-Z] | while read line; do
+                                dir=$line
+                                newdir=`echo $line | tr a-z A-Z`
+                                if [ -e "$newdir" ]; then
+                                                echo "Soubor $line nelze prejmenovat"
+                                                     else
+                                                mv -f "dir" "newdir"
+				fi
+				done
 fi
-done
-
