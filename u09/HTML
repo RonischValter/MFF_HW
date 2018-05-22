@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "<html><body>" > index.html
+for i in *.jpg do
+echo "<a href=\"$i\"><img src=\"$i help\"></a>" | sed "s/.jpg help/.thumb.jpg/g" >> index.html
+done
+echo "</body></html>" >> index.html
