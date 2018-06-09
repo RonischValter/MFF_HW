@@ -1,0 +1,27 @@
+#!/bin/bash
+hra=$1
+opt=""
+while [ "$opt" != "Z" ] && [ "$opt" != "D" ]; do
+	cat $hra/mistnost2/def
+	echo Na zemi leží:
+	cat $hra/mistnost2/itemy
+	echo Prozkoumat otvory - P
+	echo Sebrat něco ze země - S
+	echo Vrátit se zpět do předchozí místnostti - Z
+	echo Projít dveřmi do další místnosti - D
+	read opt
+	case "$opt" in
+		"P")	./$hra/mistnost2/otvory $hra;;
+		"S")	./$hra/mistnost2/sebrat $hra;;
+		"Z")	echo mistnost1 > $hra/AP
+			echo Vrátil ses do předchozí místnosti;;
+		"D")	help=`cat $hra/mistnost2/stav | grep "dveře.." | cut -d " " -f2`
+			if [ "$help" = "0" ]; then
+						echo Dveře dál jsou zavřené
+						opt=""
+					      else
+					      	echo Prošel si do další místnosti
+						echo mistnost3 > $hra/AP
+						fi;;
+	esac
+done

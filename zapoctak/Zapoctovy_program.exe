@@ -1,0 +1,64 @@
+#!/bin/bash
+echo "Hra se ovládá zadáváním velkých písmen dle výběru. Pro prohlednuti inventáře zadejte I."
+volba=""
+poprve="yes"
+echo "Přejete si pokračovat ve hře (P), nebo založit novou (N)?"
+
+while [ "$volba" != "P" ] && [ "$volba" != "N" ]; do
+	if [ "$poprve" = "yes" ]; then read volba
+					poprve="no"
+	fi
+	while [ "$volba" != "P" ] && [ "$volba" != "N" ]
+		do
+			echo "Neplatná volba, zvolte znovu"
+			read volba
+		done
+	if [ "$volba" = "P" ]; then
+		pom=`find "Save" -type d 2>/dev/null`
+		if [ "$pom" = "Save" ]; then echo Žádná hra zatím nebyla založena.
+                                         volba=""
+					 echo "Přejete si pokračovat ve hře (P), nebo založit novou (N)?"
+		fi
+	fi
+done
+
+name=""
+if [ $volba = "P" ]; then
+			echo "Dostupé hry:"
+				find "Save" -type d 2>/dev/null | grep -E "^[^/]+/[^/]+$" |while read line; do
+					if [ $line != "Save" ]; then echo `basename $line`;fi; done
+			echo Zadejte název hry
+			read name;
+			succes="No"
+			while [ $succes = "No" ]; do
+				if [ -d "Save/$name" ]; then echo "Hra $name vybrána";
+							    succes="Yes"
+							else
+							    echo "Špatný název souboru, zkuste to znovu:"
+							    read name;fi;done 
+		   else
+		   	echo "Zadejte název hry:"
+			read name;
+			prepsat="N"
+			while [ -d "Save/$name" ] && [ $prepsat = "N"]; do echo "Tato hra již existuje. Přejete si ji přepsat? (Y/N)"
+						      read prepsat
+						      if [ $prepsat = "N" ]; then
+						      				echo "Zadejte nový název:"
+						      				read name;
+									     else 
+									     	rm -r "Save/$name"; fi
+										echo "Hra přepsána"
+						      			done
+			cp -R Default Save
+			mv "Save/Default" "Save/$name"
+			echo Hra $name vytvořena
+			cat Save/$name/mistnost1/intro
+fi
+
+hra="Save/$name"
+pozice=`cat $hra/AP`
+while [ "$pozice" != "end" ]; do
+./$hra/$pozice/play $hra $volba
+pozice=`cat $hra/AP`
+done
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+echo Zdá se, že sejf se dá otevřít jen čtyřmístným číselným kódem
+echo Zadat kód - Z
+echo Vrátit se do místnosti - V
+read opt
+while [ $opt != "V" ] && [ $opt != "Z" ]; do echo neplatná volba 
+						echo Zadat kód - Z
+						echo Vrátit se do místnosti - V
+						read opt ;done
+if [ $opt = "Z" ]; then
+		echo "Zadejte čtyřmístný číselný kód (bez mezer):"
+		read opt
+		if [ $opt = "1611" ]; then echo Otevřel si Sejf a našel si v něm klíč
+					   echo Klíč přidán do inventáře
+					   sed -i "s/klíč../klíč 1/g" $1/inv
+					   sed -i "s/sejf../sejf 1/g" $1/mistnost1/stav
+				      else
+				      	   echo Neplatný kód
+					   fi;fi;
+

@@ -1,0 +1,34 @@
+#!/bin/bash
+hra=$1
+pozice="mistnost1"
+while [ "$pozice" = "mistnost1" ]; do
+	cat $hra/mistnost1/def
+	cat $hra/mistnost1/opts
+	read opt
+	
+
+	while [ "$opt" != "T" ] && [ "$opt" != "S" ] && [ "$opt" != "I" ] && [ "$opt" != "P" ]; do
+		echo Chybná volba.
+		cat $hra/mistnost1/opts
+		read opt
+		done
+	case $opt in
+		"T")    help=`cat $hra/mistnost1/stav | grep "dvere.." | cut -d " " -f2`
+			if [ "$help" = "0" ]; then
+					./$hra/mistnost1/dvere $hra
+				else
+					./$hra/mistnost1/pruchod $hra
+					fi;;
+		"S")    help=`cat $hra/mistnost1/stav | grep "sejf.." | cut -d " " -f2`
+			 if [ "$help" = "0" ]; then
+                                        ./$hra/mistnost1/sejf $hra
+                                else
+                                        cat $hra/mistnost1/sejfotevren $hra
+                                        fi;;
+
+		
+		"P") ./$hra/mistnost1/paka $hra;;
+		"I") ./$hra/inv.bash $hra;;
+	esac
+	pozice=`cat $hra/AP`
+done

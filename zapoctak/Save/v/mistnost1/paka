@@ -1,0 +1,19 @@
+#!/bin/bash
+pozice=`cat $1/mistnost1/pozicepaky`
+echo Nad pákou je na zdi vyryto číslo 1, pod ní číslo 0.
+opt=""
+while [ "$opt" != "V" ]; do
+	echo "Páka je v pozici $pozice" 
+	echo "Přepnout páku - P"
+	echo "Vrátit se do místnosti - V"
+	read opt
+	if [ "$opt" = "P" ]; then
+		echo Ozvalo se zašramocení nějakého mechanismu
+		if [ "$pozice" = "0" ]; then
+			echo "1" > $1/mistnost1/pozicepaky	
+				      else
+		        echo "0" > $1/mistnost1/pozicepaky
+		fi
+		pozice=`cat $1/mistnost1/pozicepaky`
+	fi
+done

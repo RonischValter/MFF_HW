@@ -1,0 +1,46 @@
+#!/bin/bash
+echo Máš před ssebou otvory s Papouškem, Sovou a Kalousem.
+opt=""
+hra=$1
+while [ "$opt" != "O" ]; do
+	echo Umístit do otvorů předměty - U
+        echo Odejít od otvorů - O
+	read opt
+	while [ "$opt" != "O" ] && [ "$opt" != "U" ] && [ "$opt" != "I" ]; do
+					echo Chybná volba
+					echo Umístit do otvorů předměty - U
+        				echo Odejít od otvorů - O
+					read opt
+					done
+	if [ "$opt" = "U" ]; then
+				echo V inventáři máš:
+				cat $hra/inv | while read line; do item=`cut -d " " -f1 $line`
+								   mam=`cut -d " " -f2 $line`
+								   if [ "$mam" = "1" ]; then echo $item
+								   fi
+								   done
+				good="yes"
+				echo Jaký předmět si přeješ položit na Papouška?
+				read papousek
+				echo Jaký předmět si přeješ položit na Sovu?
+				read sova
+				echo Jaký předmět si přeješ položit na Kalouse?
+				read kalous
+				pom=`cat $hra/inv | grep "^Pero.." | cut  -d " " -f2 $line`
+				if [ "$papousek" != "Pero" ] && [ "$pom" != "1" ]; then good="no"; fi
+				pom=`cat $hra/inv | grep "^Sešívačka.." | cut  -d " " -f2 $line`
+                                if [ "$sova" != "Sešívačka" ] && [ "$pom" != "1" ]; then good="no"; fi
+				pom=`cat $hra/inv | grep "^Káča.." | cut  -d " " -f2 $line`
+                                if [ "$kalous" != "Káča" ] && [ "$pom" != "1" ]; then good="no"; fi
+				if [ "$good" = "yes" ]; then
+							sed -i "s/dveře 0/dveře 1/g" $hra/mistnost2/stav
+							echo Otevřely se dveře dál
+							sed -i "s/otvory 1/otvory 0/g" $hra/mistnost2/stav
+							opt="O"
+							else
+								echo Nic se nestalo, předméty si opět ukládáš do inventáře
+							fi
+	fi
+done
+
+

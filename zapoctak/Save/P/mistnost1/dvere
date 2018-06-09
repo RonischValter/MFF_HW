@@ -1,0 +1,23 @@
+#!/bin/bash
+hra=$1
+stav=`cat $hra/mistnost1/stav | grep "^dvere.." | cut -d " " -f2`
+klic=`cat $hra/inv | grep "^klíč.." | cut -d " " -f2`
+echo "Zdá se, že se trezor otevírá nějakým klíčem."
+        echo Pokusit se dveře otevřít - O
+        echo Vrátit se do místnosti - V
+read opt
+while [ $opt != "V" ] &&[ $opt != "O" ];do
+			echo Neplatná volba
+			echo
+		        echo Pokusit se dveře otevřít - O
+		        echo Vrátit se do místnosti - V
+done
+if [ $opt = "O" ]; then if [ $klic = "1" ]; then echo Trezor se otevřel a za ním se objevila cesta dále. Prošel si do další místnosti.
+						echo mistnost2 > $hra/AP
+						sed -i "s/dvere 0/dvere 1/g" $hra/mistnost1/stav
+					  else
+					  	echo K těmto dveřím nemáš klíč a vypáčit nepůjdou. Vracíš se zpět do místnosti.
+			fi;
+		   else echo Vracíš se do místnosti.
+fi
+

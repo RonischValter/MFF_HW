@@ -1,0 +1,3 @@
+#!/bin/bash
+echo Otevíráš Trezorové dveře a procházíš do druhé místnosti.
+echo mistnost2 > $1/AP 

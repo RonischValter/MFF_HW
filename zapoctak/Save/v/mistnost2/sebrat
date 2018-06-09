@@ -1,0 +1,25 @@
+#!/bin/bash
+hra=$1
+opt=""
+while [ "$opt" != "V" ]; do
+	echo Před tebou leží:
+	cat $hra/mistnost2/itemy
+	echo Sebrat předmět - S
+	echo Vráti se od předmětů - V
+	read opt
+	if [ "$opt" = "S" ]; then
+		while [ "$opt" != "V" ]; do
+			echo Zapiš postupně které předměty chceš sebrat \(oddělené entrem\). Pokud chceš ukončit sbírání, zadej - V
+			read item
+			pom=`cat $hra/mistnost2/itemy | grep "$item"`
+			if [ "$pom" != "$item" ]; then
+							echo Takový item na zemi neleží
+						  else
+						  	echo $item přidán do inventáře
+							sed -i "/$item/d" $hra/mistnost2/itemy
+							sed -i "s/$item../$item 1/g" $hra/inv
+			fi
+			if [ "$item" = "V" ]; then opt="V"; fi
+		done
+	fi
+done
